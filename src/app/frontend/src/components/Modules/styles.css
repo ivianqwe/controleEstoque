@@ -1,0 +1,12 @@
+.modules{
+    border: 1px solid #ddd ;
+    margin: 30px;
+    background: #FFF;
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    font-weight: bold;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
