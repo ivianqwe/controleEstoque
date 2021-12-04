@@ -12,4 +12,9 @@ Instruções:
         yarn sequelize db:migrate
 
     Iniciar Server
+        Pasta: src
+        yarn start
+
+    Iniciar Front
+        Pasta: src/app/frontend
         yarn start
