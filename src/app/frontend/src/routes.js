@@ -2,7 +2,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Main from './pages/Main/main';
 import Moviments from './pages/Moviments/moviments';
-import NewMoviment from './pages/NewMoviment/newMovient';
+import NewMoviment from './pages/NewMoviment/NewMovient';
 import Cliente from './pages/Clients/clients';
 import Produto from './pages/Product/product';
 
