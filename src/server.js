@@ -1,3 +1,5 @@
+require('dotenv/config');
+
 // Importar bibliotesca
 const express = require('express');
 const cors = require('cors');

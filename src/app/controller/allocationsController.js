@@ -48,7 +48,7 @@ module.exports = {
                 return res.json(allocation);
             }
             
-            // Se não tiver uma alocação para o produto/estoque cadastrar com os dados recebidos na requisição
+            // Se não tiver uma alocação para o produto/estoque cadastrar alocação com os dados recebidos na requisição
             const allocations = await Allocation.create({stock_id, product_id, quantity});
 
             // Retornar dados para o front
