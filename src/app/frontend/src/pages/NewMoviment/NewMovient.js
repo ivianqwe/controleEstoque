@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect} from "react";
+import { useState, useEffect, useMemo} from "react";
 import { FaPlus, FaSearch, FaRegTrashAlt } from 'react-icons/fa';
 
 import Container from "../../components/Container";
@@ -54,44 +54,14 @@ function NewMoviment() {
 
     }, [])
 
-    // Enviar um novo movimento
-    async function handleSendMoviment(){
-        
-        if(!typeMoviment){
-            alert('Tipo de movimento não foi preenchido')
-            return
-        }if(!typePayment){
-            alert('Forma de pagamento não foi preenchido')
-            return
-        }if(!userId){
-            alert('Vendedo não foi preenchido')
-            return
-        }if(!clientId){
-            alert('Cliente não foi preenchido')
-            return
-        }if(!items[0]){
-            alert('Dados do produto incompletos')
-            return
-        }
-
-        api.post(`/users/${userId}/moviments`, {
-            type: typeMoviment,
-            payment_type: typePayment,
-            client_id: clientId,
-            items
-        })
-        .then(response => {
-            console.log(response.data)
-        })
-    }
     
     // Adicionar uma produto ao array de produtos
     async function handleAddProducts() {
-
+        
         const product = produtos.find(prod => prod.id === Number(produto));
-
+        
         const allocations = [];
-
+        
         await api.get('/allocations')
         .then(response => {
             response.data.forEach(allocation => {
@@ -99,7 +69,7 @@ function NewMoviment() {
                     allocations.push(allocation)
                 } 
             });
-
+            
         })
         .catch(error => {
             console.log(error)
@@ -125,18 +95,19 @@ function NewMoviment() {
                 subTotal: (quantidadeProduto * product.price)
             }
 
+            
             setItems( [...items, item] )
-
+            
             setProduto('')
             setquantidadeProduto('')
-
+            
             document.getElementById("product").value = ""
         }else {
             alert('Precisa preencher todos os campos do produto')
         }
         
     }
-
+    
     // Remover um produto dos items
     function handleRemoveItem(index){
         const produtos = [...items];
@@ -144,6 +115,45 @@ function NewMoviment() {
         produtos.splice(index, 1);
 
         setItems(produtos);
+    }
+
+    // Calcular total da venda
+    const total = useMemo(() => {
+        if(items[0]){
+            return items.map(item => item.subTotal).reduce((soma, subTotal) => soma + subTotal);
+        }
+    }, [items]);
+    
+    // Enviar um novo movimento
+    async function handleSendMoviment(){
+        
+        if(!typeMoviment){
+            alert('Tipo de movimento não foi preenchido')
+            return
+        }if(!typePayment){
+            alert('Forma de pagamento não foi preenchido')
+            return
+        }if(!userId){
+            alert('Vendedo não foi preenchido')
+            return
+        }if(!clientId){
+            alert('Cliente não foi preenchido')
+            return
+        }if(!items[0]){
+            alert('Dados do produto incompletos')
+            return
+        }
+
+        api.post(`/users/${userId}/moviments`, {
+            type: typeMoviment,
+            payment_type: typePayment,
+            client_id: clientId,
+            total,
+            items
+        })
+        .then(response => {
+            console.log(response.data)
+        })
     }
 
     return(
@@ -275,7 +285,6 @@ function NewMoviment() {
                         </li>   
                     ))}
                 </List>
-                
             
             <SubmitButton onClick={ () => handleSendMoviment()}> Enviar </SubmitButton>
             </Form>

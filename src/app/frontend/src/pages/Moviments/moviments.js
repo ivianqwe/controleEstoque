@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaPlus, FaAngleLeft,  FaAngleDown, FaArrowLeft, FaRegTrashAlt} from 'react-icons/fa';
+import { FaPlus, FaAngleLeft,  FaAngleDown, FaArrowLeft, FaRegTrashAlt } from 'react-icons/fa';
 import moment from 'moment';
 
 import Container from '../../components/Container';
@@ -83,6 +83,7 @@ function Moviments() {
                             <th>Tipo</th>
                             <th>Usuário</th>
                             <th>Cliente</th>
+                            <th>Total</th>
                             <th>Forma de Pagamento</th>
                             <th>Data</th>
                             <th></th>
@@ -97,6 +98,7 @@ function Moviments() {
                                     <td>{movimento.type}</td>
                                     <td>{movimento.userMoviments.name}</td>
                                     <td>{movimento.clientMoviments.name}</td>
+                                    <td>{movimento.total}</td>
                                     <td>{movimento.payment_type}</td>
                                     <td>{moment(movimento.createdAt).format('DD/MM/YYYY HH:mm')}</td>
                                     <td>
@@ -107,7 +109,7 @@ function Moviments() {
                                     </td>
                                 </tr>
                                 <tr className={movimento.items ? 'showItems' : 'hiddenItems'}>
-                                    <td colSpan="8">
+                                    <td colSpan="9">
                                         <table className="subTabela">
                                             <thead>
                                                 <tr>
@@ -115,6 +117,7 @@ function Moviments() {
                                                     <th>Descrição</th>
                                                     <th>Preço</th>
                                                     <th>Quantidade</th>
+                                                    <th>SubTotal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -124,6 +127,7 @@ function Moviments() {
                                                         <td>{item.movimentsItemsProduct.name}</td>
                                                         <td>{item.price}</td>
                                                         <td>{item.quantity}</td>
+                                                        <td>{item.quantity * item.price}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
