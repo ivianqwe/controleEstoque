@@ -86,10 +86,32 @@ function NewMoviment() {
     }
     
     // Adicionar uma produto ao array de produtos
-    function handleAddProducts() {
-        // e.preventDefault();
+    async function handleAddProducts() {
 
         const product = produtos.find(prod => prod.id === Number(produto));
+
+        const allocations = [];
+
+        await api.get('/allocations')
+        .then(response => {
+            response.data.forEach(allocation => {
+                if (allocation.product_id === Number(produto) && allocation.stock_id === 1) {
+                    allocations.push(allocation)
+                } 
+            });
+
+        })
+        .catch(error => {
+            console.log(error)
+        }) 
+
+        if(allocations){
+            // Se tem alocação verificar se é uma saída e se tem o saldo em estqque
+            if(typeMoviment === 'S' && allocations[0].quantity < quantidadeProduto){
+                alert(`Produto possui saldo de ${allocations[0].quantity} nesse estoque`)
+                return 
+            }
+        }
         
         if(quantidadeProduto <= 0){
             alert('Quantidado do produto tem que ser maior que 0')

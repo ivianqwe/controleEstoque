@@ -1,3 +1,4 @@
+// Importar variaveis de ambiente
 require('dotenv/config');
 
 // Importar bibliotesca
