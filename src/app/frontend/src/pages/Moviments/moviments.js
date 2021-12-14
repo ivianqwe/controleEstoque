@@ -49,6 +49,7 @@ function Moviments() {
         setDados(movimemts)
     }
 
+    // Deletar um movimento
     async function handleClickDeleteMoviment(moviments){
 
         if(window.confirm('Delete the item?')){

@@ -4,6 +4,7 @@ require('dotenv/config');
 // Importar bibliotesca
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // Instanciar server
 const app = express();
@@ -16,6 +17,7 @@ require('./database');
 
 // Middlewares
 app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 app.use('/', routes);
