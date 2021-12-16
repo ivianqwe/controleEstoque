@@ -20,6 +20,8 @@ module.exports = {
             // Receber dados na requisição
             const { product_id, quantity} = req.body;
             const { stock_id } = req.params;
+
+            console.log(req.body)
             
             // Buscar por dados recebidos na requisição
             const checkProduct = await Product.findByPk(product_id);
@@ -40,11 +42,12 @@ module.exports = {
             if(checkAllocationsProduct){ 
                 // Se tiver alocação para o produto/estoque atualizar a alocação para o novo valor
                 const allocation = await Allocation.update(
-                    {quantity: checkAllocationsProduct.dataValues.quantity + quantity},
-                    {returning: true, where: {product_id, stock_id}}
+                    {quantity: checkAllocationsProduct.dataValues.quantity + Number(quantity)},
+                    {returning: true, plain: true, where: {product_id, stock_id}}
                 )
 
                 // Retornar dados para o front
+                console.log(allocation)
                 return res.json(allocation);
             }
             

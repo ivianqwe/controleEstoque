@@ -69,7 +69,6 @@ function NewMoviment() {
                     allocations.push(allocation)
                 } 
             });
-            
         })
         .catch(error => {
             console.log(error)
@@ -95,6 +94,18 @@ function NewMoviment() {
                 subTotal: (quantidadeProduto * product.price)
             }
 
+            const indexItems = items.findIndex(item => item.product_id === produto);
+
+            if(indexItems >= 0){
+                let updateItems = items;
+                updateItems[indexItems].quantity = Number(updateItems[indexItems].quantity) + Number(quantidadeProduto);
+                updateItems[indexItems].subTotal = (updateItems[indexItems].quantity * updateItems[indexItems].price);
+                setItems( updateItems );
+                setProduto('');
+                setquantidadeProduto('');
+                document.getElementById("product").value = "";
+                return
+            }
             
             setItems( [...items, item] )
             
@@ -126,7 +137,6 @@ function NewMoviment() {
     
     // Enviar um novo movimento
     async function handleSendMoviment(){
-        
         if(!typeMoviment){
             alert('Tipo de movimento não foi preenchido')
             return
@@ -153,6 +163,15 @@ function NewMoviment() {
         })
         .then(response => {
             console.log(response.data)
+        })
+
+        items.forEach(async item => {
+                await api.post(`/allocations/stock/${1}`, {
+                product_id: item.product_id,
+                quantity: typeMoviment === 'E' ? item.quantity : -item.quantity
+            }).then(response => {
+                console.log(response.data)
+            })
         })
     }
 
